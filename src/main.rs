@@ -14,6 +14,8 @@ fn main() {
     Should boot straight in to OS*/
 
     //For windows. Change to sh for linux
+    
+    //Get GUID for target OS
     let output = if cfg!(target_os = "windows")
     {
         Command::new("cmd")
@@ -23,9 +25,12 @@ fn main() {
     }
     else
     {
+        //Not supported yet
         return;
     };
     
+    //Use regex to parse OS's section, then parse the GUID
+    //Rust doesn't support lookarounds in its Regex which is dumb
     let con_output = String::from_utf8_lossy(&output.stdout).to_string();
     let section = Regex::new(r"identifier.+(?:\n.+){3}ubuntu").unwrap();
 
@@ -38,8 +43,13 @@ fn main() {
     else
     {
         println!("No capture found");
+        return;
     };
 
+    //Use GUID to set OS as default boot
 
-    std::io::stdin().read_line(&mut String::new()).unwrap();
+    //Restart machine
+
+    //Keep app running
+    //std::io::stdin().read_line(&mut String::new()).unwrap();
 }
