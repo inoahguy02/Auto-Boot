@@ -1,4 +1,5 @@
 use std::process::Command;
+use regex::Regex;
 
 fn main() {
     /*Not going to implement auto usb plug in listener just yet
@@ -25,6 +26,20 @@ fn main() {
         return;
     };
     
-    println!("Output: {}", String::from_utf8_lossy(&output.stdout));
+    let con_output = String::from_utf8_lossy(&output.stdout).to_string();
+    let section = Regex::new(r"identifier.+(?:\n.+){3}ubuntu").unwrap();
+
+    if let Some(capture) = section.captures(&con_output)
+    {
+        let guid_pattern = Regex::new(r"\{\S+\}").unwrap();
+        let guid = guid_pattern.find(capture.get(0).unwrap().as_str()).unwrap().as_str();
+        println!("Capture: {}", guid);
+    }
+    else
+    {
+        println!("No capture found");
+    };
+
+
     std::io::stdin().read_line(&mut String::new()).unwrap();
 }
