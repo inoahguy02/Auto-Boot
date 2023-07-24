@@ -19,7 +19,7 @@ fn main() {
     let output = if cfg!(target_os = "windows")
     {
         Command::new("cmd")
-            .args(["/C", "bcdedit /enum firmware"])
+            .arg("/C bcdedit /enum firmware")
             .output()
             .expect("Failed to execute")
     }
@@ -33,11 +33,12 @@ fn main() {
     //Rust doesn't support lookarounds in its Regex which is dumb
     let con_output = String::from_utf8_lossy(&output.stdout).to_string();
     let section = Regex::new(r"identifier.+(?:\n.+){3}ubuntu").unwrap();
+    let guid;
 
     if let Some(capture) = section.captures(&con_output)
     {
         let guid_pattern = Regex::new(r"\{\S+\}").unwrap();
-        let guid = guid_pattern.find(capture.get(0).unwrap().as_str()).unwrap().as_str();
+        guid = guid_pattern.find(capture.get(0).unwrap().as_str()).unwrap().as_str();
         println!("Capture: {}", guid);
     }
     else
@@ -47,8 +48,16 @@ fn main() {
     };
 
     //Use GUID to set OS as default boot
-
+    Command::new("cmd")
+        .arg(format!("/C bcdedit /set {{fwbootmgr}} default {}", guid))
+        .output()
+        .expect("Failed to execute");
+    
     //Restart machine
+    Command::new("cmd")
+        .arg("/C shutdown /r /t 0")
+        .output()
+        .expect("Failed to execute");
 
     //Keep app running
     //std::io::stdin().read_line(&mut String::new()).unwrap();
