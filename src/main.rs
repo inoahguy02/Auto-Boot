@@ -7,6 +7,12 @@ fn get_os() -> String {
     io::stdout().flush().unwrap();
     let mut op_sys = String::new();
     io::stdin().read_line(&mut op_sys).unwrap();
+    op_sys = op_sys.trim().to_string();
+    
+    if op_sys.to_lowercase() == "exit" {
+        std::process::exit(0);
+    } 
+
     op_sys
 }
 
@@ -23,8 +29,7 @@ fn main() {
         loop {
             //Use regex to parse OS's section, then parse the GUID
             //Rust doesn't support lookarounds in its Regex which is dumb
-            let op_sys = get_os();
-            let section = Regex::new(&format!(r"identifier.+(?:\n.+){{3}}{}", op_sys.to_lowercase())).unwrap();
+            let section = Regex::new(&format!(r"identifier.+(?:\n.+){{3}}{}", get_os().to_lowercase())).unwrap();
 
             if let Some(capture) = section.captures(&con_output) {
                 let guid_pattern = Regex::new(r"\{\S+\}").unwrap();
@@ -63,7 +68,6 @@ fn main() {
         let boot_num;
         loop {
             let line = Regex::new(&format!(r"(?i)\d{{4}}\* {}", get_os())).unwrap();
-
             if let Some(capture) = line.captures(&con_output) {
                 let guid_pattern = Regex::new(r"\d{4}").unwrap();
                 boot_num = guid_pattern.find(capture.get(0).unwrap().as_str()).unwrap().as_str();
