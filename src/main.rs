@@ -3,7 +3,7 @@ use regex::Regex;
 use std::io::{self, Write};
 
 fn get_os() -> String {
-    print!("Type the OS to boot in to: ");
+    print!("Type the OS to boot in to (For Linux, type the distro like Ubuntu, Debian, etc.): ");
     io::stdout().flush().unwrap();
     let mut op_sys = String::new();
     io::stdin().read_line(&mut op_sys).unwrap();
