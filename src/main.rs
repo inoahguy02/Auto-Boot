@@ -7,7 +7,13 @@ fn get_os() -> String {
     io::stdout().flush().unwrap();
     let mut op_sys = String::new();
     io::stdin().read_line(&mut op_sys).unwrap();
-    op_sys.trim().to_string()
+    op_sys = op_sys.trim().to_string();
+    
+    if op_sys.to_lowercase() == "exit" {
+        std::process::exit(0);
+    } 
+
+    op_sys
 }
 
 fn main() {
