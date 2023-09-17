@@ -2,6 +2,10 @@
 
 Auto boot manager desktop app created using Rust. 
 
+## Note
+When entering a Linux distribution, list the parent/forked distribution and not the flavor<br>
+Ex: If booting into Mint, type Ubuntu. If booting into Ubuntu, type Ubuntu
+
 # Todo:
 
 1. Add support for MacOS
