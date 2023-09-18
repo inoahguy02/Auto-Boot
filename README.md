@@ -8,6 +8,7 @@ Ex: If booting into Mint, type Ubuntu. If booting into Ubuntu, type Ubuntu
 
 # Todo:
 
-1. Add support for MacOS
-2. Turn into background process that will run on startup. Will have an event listener for the external drive being plugged in
-3. Move out of the terminal stage and implement app with UI to select drive and OS
+1. Research and implement a way to boot different flavors of a distro. Ex: Mint, Kubuntu, Lubuntu
+2. Add support for MacOS
+3. Turn into background process that will run on startup. Will have an event listener for the external drive being plugged in
+4. Move out of the terminal stage and implement app with UI to select drive and OS
